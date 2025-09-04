@@ -1,0 +1,21 @@
+# Visual Studio Code
+.vscode/
+*.code-workspace
+
+# Build artifacts
+build/
+dist/
+out/
+*.log
+
+# Dependencies
+node_modules/
+
+# Temporary files
+*.tmp
+*.~
+*.bak
+
+# System files
+.DS_Store
+Thumbs.db
