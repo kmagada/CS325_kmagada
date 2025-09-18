@@ -9,3 +9,4 @@ EXPOSE 80
 CMD ["apachectl", "-D", "FOREGROUND"]
 
 # docker build -t cs325:copy .
+# docker run -d -p 8080:80 cs325:copy

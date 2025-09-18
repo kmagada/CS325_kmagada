@@ -23,7 +23,7 @@ def main():
         conn.request("GET", "/search?query=developer%20jobs%20in%20chicago&page=1&num_pages=1&country=us&date_posted=all", headers=headers)
         res = conn.getresponse()
         data = res.read()
-        with open("data.json", "w", encoding="utf-8") as f:
+        with open("project1/data/data.json", "w", encoding="utf-8") as f:
             json.dump(json.loads(data.decode("utf-8")), f, ensure_ascii=False, indent=4)
     except Exception as e:
         print("Error:", e)
