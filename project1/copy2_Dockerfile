@@ -1,0 +1,14 @@
+FROM python:3.9-slim
+
+# Create app directory and set it as workdir
+WORKDIR /home/proj
+RUN mkdir -p /home/data_files
+
+# Copy project files into the container
+COPY proj /home/proj
+
+# Install Python requirements
+RUN pip install --no-cache-dir -r /home/proj/requirements.txt
+
+# Run the main script
+CMD ["python", "/home/proj/main.py"]

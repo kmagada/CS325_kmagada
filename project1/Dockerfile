@@ -1,6 +1,11 @@
-FROM python:3.9-slim
-WORKDIR /home
-RUN mkdir data_files
-COPY proj /home
-RUN pip install -r requirements.txt
-CMD ["python", "main.py"]
+FROM ubuntu:22.04
+RUN apt-get update
+RUN apt-get install -y apache2
+
+RUN echo "What the hell" > /var/www/html/index.html
+
+EXPOSE 80
+
+CMD ["apachectl", "-D", "FOREGROUND"]
+
+# docker build -t cs325:copy .
