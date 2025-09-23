@@ -1,6 +1,7 @@
 import json
 import ssl
 import http.client
+import os
 
 
 def create_ssl_context():
@@ -20,11 +21,27 @@ def main():
             'x-rapidapi-key': "a7d9c93d88mshd416eddf6bc76e8p1f29efjsn9578710bfc4c",
             'x-rapidapi-host': "jsearch.p.rapidapi.com"
         }
-        conn.request("GET", "/search?query=developer%20jobs%20in%20chicago&page=1&num_pages=1&country=us&date_posted=all", headers=headers)
+        conn.request(
+            "GET",
+            "/search?query=developer%20jobs%20in%20chicago&page=1&num_pages=1&country=us&date_posted=all",
+            headers=headers
+        )
         res = conn.getresponse()
-        data = res.read()
-        with open("project1/data/data.json", "w", encoding="utf-8") as f:
-            json.dump(json.loads(data.decode("utf-8")), f, ensure_ascii=False, indent=4)
+        raw_data = res.read()
+        decoded = json.loads(raw_data.decode("utf-8"))
+
+        # Ensure directory exists
+        file_path = "../data/tempData.json"
+        os.makedirs(os.path.dirname(file_path), exist_ok=True)
+
+        # Always overwrite with latest data
+        with open(file_path, "w", encoding="utf-8") as f:
+            json.dump(decoded, f, ensure_ascii=False, indent=4)
+
+        # Keep a copy in memory if needed
+        data = decoded
+        print("Data saved successfully.")
+
     except Exception as e:
         print("Error:", e)
     finally:
