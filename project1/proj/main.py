@@ -31,7 +31,7 @@ def main():
         decoded = json.loads(raw_data.decode("utf-8"))
 
         # Ensure directory exists
-        file_path = "./data/tempData.json"
+        file_path = "./tempData.json"
         os.makedirs(os.path.dirname(file_path), exist_ok=True)
 
         # Always overwrite with latest data

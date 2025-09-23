@@ -65,3 +65,25 @@ class Circle(Shape):
         self.radius = radius
     def area(self):
         return 3.14 * self.radius * self.radius
+    
+class Vehicle:
+    def acc(self):
+        raise NotImplementedError
+    def brake(self):
+        raise NotImplementedError
+    def turn(self):
+        raise NotImplementedError
+    def fly(self):
+        raise NotImplementedError
+
+class Bicylce(Vehicle):
+    def acc(self):
+        pass
+    def brake(self):
+        pass
+    def turn(self, direction):
+        pass
+    """
+    def fly(self):
+        raise Exception("Bicycles can't fly")
+    """
