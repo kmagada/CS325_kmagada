@@ -31,14 +31,14 @@ def main():
         decoded = json.loads(raw_data.decode("utf-8"))
 
         # Ensure directory exists
-        file_path = "./tempData.json"
+        file_path = "./project1/data/tempData.json"
         os.makedirs(os.path.dirname(file_path), exist_ok=True)
 
-        # Always overwrite with latest data
+        # always overwrite it with latest data
         with open(file_path, "w", encoding="utf-8") as f:
             json.dump(decoded, f, ensure_ascii=False, indent=4)
 
-        # Keep a copy in memory for embedding i think
+        # Keep a copy in memory for embedding i think might delete tempData.json
         data = decoded
         print("Data saved successfully.")
 

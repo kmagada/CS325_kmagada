@@ -46,7 +46,7 @@ class AreaCalculator:
             elif shape.shape_type == "circle":
                 total_area += 3.14 * shape.radius * shape.radius
         return total_area
-"""
+
 
 class Shape(ABC):
     @abstractmethod
@@ -66,6 +66,7 @@ class Circle(Shape):
     def area(self):
         return 3.14 * self.radius * self.radius
     
+
 class Vehicle:
     def acc(self):
         raise NotImplementedError
@@ -83,7 +84,21 @@ class Bicylce(Vehicle):
         pass
     def turn(self, direction):
         pass
-    """
+"""
+class Movable:
+    def acc(self):
+        raise NotImplementedError
+    def brake(self):
+        raise NotImplementedError
+    def turn(self):
+        raise NotImplementedError
+    
+class flyable:
     def fly(self):
-        raise Exception("Bicycles can't fly")
-    """
+        raise NotImplementedError
+    
+class Aeroplane(Movable, flyable):
+    pass
+
+class Car(Movable):
+    pass
