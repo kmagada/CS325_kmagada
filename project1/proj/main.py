@@ -34,7 +34,7 @@ def main():
         file_path = "./project1/data/tempData.json"
         os.makedirs(os.path.dirname(file_path), exist_ok=True)
 
-        # always overwrite it with latest data
+        # always overwrite
         with open(file_path, "w", encoding="utf-8") as f:
             json.dump(decoded, f, ensure_ascii=False, indent=4)
 
