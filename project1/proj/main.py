@@ -26,29 +26,38 @@ def main():
             "/search?query=developer%20jobs%20in%20chicago&page=1&num_pages=1&country=us&date_posted=all",
             headers=headers
         )
-        res = conn.getresponse()
-        raw_data = res.read()
+
+        # connecting and reading data
+        raw_data = conn.getresponse().read()
         decoded = json.loads(raw_data.decode("utf-8"))
 
-        # Ensure directory exists
+        # file path for JSON
         file_path = "./project1/data/tempData.json"
-        os.makedirs(os.path.dirname(file_path), exist_ok=True)
+
 
         # always overwrite
         with open(file_path, "w", encoding="utf-8") as f:
             json.dump(decoded, f, ensure_ascii=False, indent=4)
 
-        # Keep a copy in memory for embedding i think might delete tempData.json
+        # Keep a copy in memory for embedding i think might delete tempData.json so idk
         data = decoded
-        print("Data saved successfully.")
+        conn.close()
+        print("Data pulled successfully.")
 
     except Exception as e:
         print("Error:", e)
-    finally:
-        try:
-            conn.close()
-        except Exception:
-            pass
+
+    # add embedding here
+    # text-embedding-3-small or text-embedding-3-large
+
+
+    # resume embedding
+
+
+    # job listing embedding
+
+
+    # add Top N Selection here for top 10 jobs for the resume
 
 
 if __name__ == '__main__':
