@@ -22,3 +22,10 @@ Thumbs.db
 
 #runtime files
 *data.json
+
+# Python Chache
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.pdb
