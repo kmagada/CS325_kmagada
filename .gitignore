@@ -38,5 +38,5 @@ __pycache__/
 .env
 .venv
 
-# the proJunk folder
+# the proJunk folder and its contents
 ./proJunk
