@@ -11,6 +11,10 @@ out/
 # Dependencies
 node_modules/
 
+# conda
+env/
+.conda/
+
 # Temporary files
 *.tmp
 *.~
@@ -29,3 +33,7 @@ __pycache__/
 *.pyo
 *.pyd
 *.pdb
+
+#.env files
+.env
+.venv
