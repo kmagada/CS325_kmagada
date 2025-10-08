@@ -1,6 +1,0 @@
-# Making the dockerfile for project1
-FROM ubuntu:22.04
-WORKDIR /home
-RUN mkdir data_files
-COPY proj home/data_files/
-RUN ls -l home/data_files/

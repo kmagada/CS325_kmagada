@@ -38,5 +38,5 @@ __pycache__/
 .env
 .venv
 
-# actual junk files
+# the proJunk folder
 ./proJunk
