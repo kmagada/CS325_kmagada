@@ -40,3 +40,7 @@ __pycache__/
 
 # the proJunk folder and its contents
 ./proJunk
+
+# ignore data files in project1/data
+/project1/data/*
+!/project1/data/.gitkeep
