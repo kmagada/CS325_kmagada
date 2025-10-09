@@ -10,7 +10,6 @@ client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
 # ----------------- JOB LISTINGS -----------------
 
 def extract_job_texts(job_json) -> List[str]:
-    """Combine relevant fields of each job into one string for embedding."""
     text_list = []
     for job in job_json.get("data", []):
         parts = []
@@ -72,7 +71,6 @@ def embed_joblistings(file_path: str, model="text-embedding-3-small"):
 # ----------------- RESUME -----------------
 
 def extract_resume_text(resume_json) -> str:
-    """Combine key resume fields into one text block for embedding."""
     parts = []
 
     basics = resume_json.get("basics", {})
