@@ -3,6 +3,9 @@ import ssl
 import http.client
 import os
 
+from dotenv import load_dotenv
+load_dotenv()
+
 
 def create_ssl_context():
     try:
@@ -19,7 +22,7 @@ def main():
     try:
         conn = http.client.HTTPSConnection("jsearch.p.rapidapi.com", context=ctx)
         headers = {
-            'x-rapidapi-key': "a7d9c93d88mshd416eddf6bc76e8p1f29efjsn9578710bfc4c",
+            'x-rapidapi-key': (os.getenv("RAPI_API_KEY")),
             'x-rapidapi-host': "jsearch.p.rapidapi.com"
         }
         conn.request(
