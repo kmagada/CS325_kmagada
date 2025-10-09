@@ -1,38 +1,43 @@
+import os
+import json
+from dotenv import load_dotenv
 from openai import OpenAI
+from typing import List
+
+# Load .env file for the api key
+load_dotenv()
+client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
+
+def get_embeddings_from_json(file_path: str, model="text-embedding-3-small"):
+    """
+    Reads a JSON file containing a list of strings,
+    generates embeddings, and returns the vector list.
+    """
+    # Load JSON content
+    with open(file_path, "r", encoding="utf-8") as f:
+        data = json.load(f)
+
+    # Ensure it's a list of strings
+    if not isinstance(data, list) or not all(isinstance(x, str) for x in data):
+        raise ValueError("JSON file must contain a list of strings")
+
+    # Get embeddings in one request (faster than looping)
+    response = client.embeddings.create(
+        input=data,
+        model=model
+    )
+
+    # Vectors
+    embeddings = [item.embedding for item in response.data]
+    return embeddings
 
 
-client = OpenAI()
+def main(file_path: str):
+    embeddings = get_embeddings_from_json(file_path)
+    print(f"Loaded {len(embeddings)} embeddings.")
+    print("First embedding example:", embeddings[0][:10])  # print only first 10 values for preview
 
 
-# text-embedding-3-small or text-embedding-3-large
-response = client.embeddings.create(
-    input="Your text string goes here",
-    model="text-embedding-3-small"
-)
-print(response.data[0].embedding)
-
-
-
-
-'''
-# FROM OPENAI RECOMMANDATION STRING THING
-def recommendations_from_strings(
-    strings: List[str],
-    index_of_source_string: int,
-    model="text-embedding-3-small",
-) -> List[int]:
-    """Return nearest neighbors of a given string."""
-
-    # get embeddings for all strings
-    embeddings = [embedding_from_string(string, model=model) for string in strings]
-
-    # get the embedding of the source string
-    query_embedding = embeddings[index_of_source_string]
-
-    # get distances between the source embedding and other embeddings (function from embeddings_utils.py)
-    distances = distances_from_embeddings(query_embedding, embeddings, distance_metric="cosine")
-
-    # get indices of nearest neighbors (function from embeddings_utils.py)
-    indices_of_nearest_neighbors = indices_of_nearest_neighbors_from_distances(distances)
-    return indices_of_nearest_neighbors
-'''
+if __name__ == "__main__":
+    import sys
+    main(sys.argv[1])
