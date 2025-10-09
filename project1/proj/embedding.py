@@ -4,35 +4,129 @@ from dotenv import load_dotenv
 from openai import OpenAI
 from typing import List
 
-# Load .env file for the api key
 load_dotenv()
 client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
 
-def get_embeddings_from_json(file_path: str, model="text-embedding-3-small"):
-    # Load JSON content
+# ----------------- JOB LISTINGS -----------------
+
+def extract_job_texts(job_json) -> List[str]:
+    """Combine relevant fields of each job into one string for embedding."""
+    text_list = []
+    for job in job_json.get("data", []):
+        parts = []
+
+        if job.get("job_title"):
+            parts.append(job["job_title"])
+        if job.get("job_description"):
+            parts.append(job["job_description"])
+
+        highlights = job.get("job_highlights", {})
+        for values in highlights.values():
+            if isinstance(values, list):
+                parts.extend(values)
+
+        if job.get("employer_name"):
+            parts.append(f"Company: {job['employer_name']}")
+        if job.get("job_city") or job.get("job_state"):
+            parts.append(f"Location: {job.get('job_city', '')}, {job.get('job_state', '')}")
+
+        full_text = "\n".join(filter(None, parts)).strip()
+        if full_text:
+            text_list.append(full_text)
+
+    return text_list
+
+def embed_joblistings(file_path: str, model="text-embedding-3-small"):
+    """Read job JSON, embed one vector per job, save output JSON."""
     with open(file_path, "r", encoding="utf-8") as f:
-        data = json.load(f)
+        raw_data = json.load(f)
 
-    # Ensure it's a list of strings
-    if not isinstance(data, list) or not all(isinstance(x, str) for x in data):
-        raise ValueError("JSON file must contain a list of strings")
+    job_texts = extract_job_texts(raw_data)
+    if not job_texts:
+        raise ValueError("No job postings found to embed.")
 
-    # Get embeddings in one request (faster than looping)
     response = client.embeddings.create(
-        input=data,
+        input=job_texts,
         model=model
     )
 
-    # Vectors
     embeddings = [item.embedding for item in response.data]
-    return embeddings
+    jobs = raw_data.get("data", [])
 
+    output = [
+        {
+            "job_id": job.get("job_id"),
+            "job_title": job.get("job_title"),
+            "vector": emb
+        }
+        for job, emb in zip(jobs, embeddings)
+    ]
 
-def main(file_path: str):
-    embeddings = get_embeddings_from_json(file_path)
-    return embeddings
+    out_path = "./project1/data/jobEmbeddings.json"
+    with open(out_path, "w", encoding="utf-8") as out_f:
+        json.dump(output, out_f, ensure_ascii=False, indent=2)
 
+    print(f"{len(output)} job embeddings created and saved to {out_path}")
+    return output
 
-if __name__ == "__main__":
-    import sys
-    main(sys.argv[1])
+# ----------------- RESUME -----------------
+
+def extract_resume_text(resume_json) -> str:
+    """Combine key resume fields into one text block for embedding."""
+    parts = []
+
+    basics = resume_json.get("basics", {})
+    if basics.get("name"):
+        parts.append(basics["name"])
+    if basics.get("label"):
+        parts.append(basics["label"])
+    if basics.get("summary"):
+        parts.append(basics["summary"])
+
+    for job in resume_json.get("work", []):
+        parts.extend([
+            job.get("position", ""),
+            job.get("name", ""),
+            job.get("summary", "")
+        ])
+        parts.extend(job.get("highlights", []))
+
+    for edu in resume_json.get("education", []):
+        parts.extend([
+            edu.get("institution", ""),
+            edu.get("studyType", ""),
+            edu.get("area", "")
+        ])
+
+    for skill in resume_json.get("skills", []):
+        parts.append(skill.get("name", ""))
+        parts.extend(skill.get("keywords", []))
+
+    for interest in resume_json.get("interests", []):
+        parts.append(interest.get("name", ""))
+        parts.extend(interest.get("keywords", []))
+
+    return "\n".join(filter(None, parts)).strip()
+
+def embed_resume(file_path: str, model="text-embedding-3-small"):
+    """Read resume JSON, embed as a single vector, save output JSON."""
+    with open(file_path, "r", encoding="utf-8") as f:
+        resume_json = json.load(f)
+
+    resume_text = extract_resume_text(resume_json)
+    if not resume_text:
+        raise ValueError("No text found in resume to embed.")
+
+    response = client.embeddings.create(
+        input=resume_text,
+        model=model
+    )
+
+    embedding = response.data[0].embedding
+
+    out_path = "./project1/data/resumeEmbedding.json"
+    with open(out_path, "w", encoding="utf-8") as out_f:
+        json.dump({"vector": embedding}, out_f, ensure_ascii=False, indent=2)
+
+    print(f"Resume embedding saved to {out_path}")
+    return embedding

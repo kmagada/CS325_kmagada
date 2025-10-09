@@ -5,7 +5,7 @@ import embedding
 
 def main():
     JOB_FILE = os.path.join('project1', 'data', 'jobData.json')
-    RESUME_FILE = os.path.join('project1', 'data', 'resumeData.json')
+    RESUME_FILE = os.path.join('project1', 'data', 'resume.json')
 
     try:
         #pulls data with the API and saves to a JSON file
@@ -13,7 +13,7 @@ def main():
 
         #embeds the resume and job listings
         job_embeddings = embedding.main(JOB_FILE)
-        #resume_embeddings = embedding.main(RESUME_FILE)
+        resume_embeddings = embedding.main(RESUME_FILE)
         
         # add Top N Selection here for top 10 jobs for the resume maybe use the OpenAI embedding to show recommendations
         # here

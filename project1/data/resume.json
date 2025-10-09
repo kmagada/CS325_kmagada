@@ -1,0 +1,102 @@
+{
+  "basics": {
+    "name": "Jane Doe",
+    "label": "Software Engineer",
+    "email": "jane.doe@example.com",
+    "phone": "(555) 123-4567",
+    "url": "https://janedoe.com",
+    "summary": "Highly motivated and results-oriented software engineer with 5+ years of experience in developing and deploying scalable web applications.",
+    "location": {
+      "address": "123 Main St",
+      "postalCode": "90210",
+      "city": "Beverly Hills",
+      "countryCode": "US",
+      "region": "California"
+    },
+    "profiles": [
+      {
+        "network": "LinkedIn",
+        "username": "janedoe",
+        "url": "https://linkedin.com/in/janedoe"
+      },
+      {
+        "network": "GitHub",
+        "username": "janedoe-dev",
+        "url": "https://github.com/janedoe-dev"
+      }
+    ]
+  },
+  "work": [
+    {
+      "name": "Tech Solutions Inc.",
+      "position": "Senior Software Engineer",
+      "url": "https://techsolutions.com",
+      "startDate": "2022-01-01",
+      "endDate": "Present",
+      "summary": "Led development of key features for a high-traffic e-commerce platform.",
+      "highlights": [
+        "Implemented a new payment gateway, increasing transaction success rate by 15%",
+        "Mentored junior engineers and conducted code reviews"
+      ]
+    },
+    {
+      "name": "Innovate Corp.",
+      "position": "Software Engineer",
+      "url": "https://innovatecorp.com",
+      "startDate": "2019-06-01",
+      "endDate": "2021-12-31",
+      "summary": "Developed and maintained RESTful APIs for a mobile application.",
+      "highlights": [
+        "Designed and implemented database schemas for new features",
+        "Reduced API response times by 20% through optimization techniques"
+      ]
+    }
+  ],
+  "education": [
+    {
+      "institution": "University of California, Berkeley",
+      "url": "https://berkeley.edu",
+      "area": "Computer Science",
+      "studyType": "Master of Science",
+      "startDate": "2018-09-01",
+      "endDate": "2019-05-31",
+      "score": "3.9/4.0"
+    },
+    {
+      "institution": "Stanford University",
+      "url": "https://stanford.edu",
+      "area": "Computer Engineering",
+      "studyType": "Bachelor of Science",
+      "startDate": "2014-09-01",
+      "endDate": "2018-05-31",
+      "score": "3.8/4.0"
+    }
+  ],
+  "skills": [
+    {
+      "name": "Programming Languages",
+      "level": "Expert",
+      "keywords": ["Python", "Java", "JavaScript", "Go"]
+    },
+    {
+      "name": "Frameworks",
+      "level": "Advanced",
+      "keywords": ["React", "Spring Boot", "Django", "Node.js"]
+    },
+    {
+      "name": "Databases",
+      "level": "Intermediate",
+      "keywords": ["PostgreSQL", "MongoDB", "MySQL"]
+    }
+  ],
+  "interests": [
+    {
+      "name": "Hiking",
+      "keywords": ["Outdoors", "Nature"]
+    },
+    {
+      "name": "Photography",
+      "keywords": ["Travel", "Landscape"]
+    }
+  ]
+}
