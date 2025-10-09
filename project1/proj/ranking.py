@@ -3,7 +3,6 @@ import numpy as np
 from typing import List, Dict, Tuple
 
 def cosine_similarity(vec_a: List[float], vec_b: List[float]) -> float:
-    """Compute cosine similarity between two vectors."""
     a = np.array(vec_a)
     b = np.array(vec_b)
     dot = np.dot(a, b)
@@ -43,8 +42,7 @@ def rank_top_jobs(
     return top_jobs
 
 def print_ranked_jobs(ranked_jobs: List[Tuple[Dict, float]]):
-    """Nicely print the top N ranked jobs."""
-    print("\n=== 🏆 Top Job Matches ===")
+    print("\n=== Top Job Matches ===")
     for idx, (job, score) in enumerate(ranked_jobs, 1):
         title = job.get("job_title", "N/A")
         company = job.get("employer_name", "N/A")

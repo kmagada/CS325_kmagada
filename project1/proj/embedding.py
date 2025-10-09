@@ -35,38 +35,32 @@ def extract_job_texts(job_json) -> List[str]:
 
     return text_list
 
-def embed_joblistings(file_path: str, model="text-embedding-3-small"):
-    """Read job JSON, embed one vector per job, save output JSON."""
-    with open(file_path, "r", encoding="utf-8") as f:
-        raw_data = json.load(f)
+def embed_joblistings(job_file: str):
+    with open(job_file, "r", encoding="utf-8") as f:
+        data = json.load(f)
 
-    job_texts = extract_job_texts(raw_data)
-    if not job_texts:
-        raise ValueError("No job postings found to embed.")
+    job_embeddings = []
+    for job in data.get("data", []):
+        # Combine fields into one string for embedding
+        text_to_embed = f"{job.get('job_title', '')} {job.get('job_description', '')}"
+        response = client.embeddings.create(
+            input=text_to_embed,
+            model="text-embedding-3-small"
+        )
+        vector = response.data[0].embedding
 
-    response = client.embeddings.create(
-        input=job_texts,
-        model=model
-    )
-
-    embeddings = [item.embedding for item in response.data]
-    jobs = raw_data.get("data", [])
-
-    output = [
-        {
+        job_embeddings.append({
             "job_id": job.get("job_id"),
-            "job_title": job.get("job_title"),
-            "vector": emb
-        }
-        for job, emb in zip(jobs, embeddings)
-    ]
+            "vector": vector,
+            "metadata": {
+                "job_title": job.get("job_title", "Unknown"),
+                "employer_name": job.get("employer_name", "Unknown"),
+                "job_city": job.get("job_city", ""),
+                "job_state": job.get("job_state", "")
+            }
+        })
 
-    out_path = "./project1/data/jobEmbeddings.json"
-    with open(out_path, "w", encoding="utf-8") as out_f:
-        json.dump(output, out_f, ensure_ascii=False, indent=2)
-
-    print(f"{len(output)} job embeddings created and saved to {out_path}")
-    return output
+    return job_embeddings
 
 # ----------------- RESUME -----------------
 
@@ -126,5 +120,5 @@ def embed_resume(file_path: str, model="text-embedding-3-small"):
     with open(out_path, "w", encoding="utf-8") as out_f:
         json.dump({"vector": embedding}, out_f, ensure_ascii=False, indent=2)
 
-    print(f"Resume embedding saved to {out_path}")
+    print(f"Resume saved!")
     return embedding
