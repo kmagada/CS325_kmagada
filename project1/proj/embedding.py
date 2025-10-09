@@ -9,10 +9,6 @@ load_dotenv()
 client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
 
 def get_embeddings_from_json(file_path: str, model="text-embedding-3-small"):
-    """
-    Reads a JSON file containing a list of strings,
-    generates embeddings, and returns the vector list.
-    """
     # Load JSON content
     with open(file_path, "r", encoding="utf-8") as f:
         data = json.load(f)
@@ -34,8 +30,7 @@ def get_embeddings_from_json(file_path: str, model="text-embedding-3-small"):
 
 def main(file_path: str):
     embeddings = get_embeddings_from_json(file_path)
-    print(f"Loaded {len(embeddings)} embeddings.")
-    print("First embedding example:", embeddings[0][:10])  # print only first 10 values for preview
+    return embeddings
 
 
 if __name__ == "__main__":

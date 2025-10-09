@@ -36,15 +36,13 @@ def main():
         decoded = json.loads(raw_data.decode("utf-8"))
 
         # file path for JSON
-        file_path = "./project1/data/tempData.json"
+        file_path = "./project1/data/jobData.json"
 
 
         # always overwrite file
         with open(file_path, "w", encoding="utf-8") as f:
             json.dump(decoded, f, ensure_ascii=False, indent=4)
 
-        # Keep a copy in memory for embedding i think might delete tempData.json so idk or return the data instead
-        data = decoded
         conn.close()
         print("Data pulled successfully.")
 
