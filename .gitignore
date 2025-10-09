@@ -44,4 +44,4 @@ __pycache__/
 # ignore data files in project1/data
 /project1/data/*
 /project1/data/*.json
-!/project1/data/.gitkeep
+/project1/data/*.csv
