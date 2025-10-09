@@ -13,41 +13,34 @@ def cosine_similarity(vec_a: List[float], vec_b: List[float]) -> float:
         return 0.0
     return float(dot / (norm_a * norm_b))
 
-def load_resume_embedding(path: str = "./project1/data/resumeEmbedding.json") -> List[float]:
-    with open(path, "r", encoding="utf-8") as f:
-        data = json.load(f)
-    return data["vector"]
-
-def load_job_embeddings(path: str = "./project1/data/jobEmbeddings.json") -> List[Dict]:
-    with open(path, "r", encoding="utf-8") as f:
-        return json.load(f)
-
 def rank_top_jobs(
     resume_vector: List[float],
     job_embeddings: List[Dict],
-    job_data_path: str = "./project1/data/jobData.json",
     top_n: int = 10
 ) -> List[Tuple[Dict, float]]:
-    """Return top N job postings ranked by similarity to the resume."""
-    # Load original job data to get titles, company, location, etc.
-    with open(job_data_path, "r", encoding="utf-8") as f:
-        job_data = json.load(f)["data"]
-
+    """
+    Rank top N jobs by similarity to the resume vector.
+    job_embeddings is expected to be a list of dicts like:
+    [
+        { "job_id": "123", "vector": [...], "metadata": {...job info...} },
+        ...
+    ]
+    """
     scored_jobs = []
+
     for emb_entry in job_embeddings:
-        job_id = emb_entry["job_id"]
         vector = emb_entry["vector"]
         score = cosine_similarity(resume_vector, vector)
 
-        # match the embedding back to the original job info
-        job_info = next((job for job in job_data if job.get("job_id") == job_id), None)
-        if job_info:
-            scored_jobs.append((job_info, score))
+        # attach metadata (e.g. title, company, location)
+        job_info = emb_entry.get("metadata", {})
+        scored_jobs.append((job_info, score))
 
-    # Sort descending by similarity score
     scored_jobs.sort(key=lambda x: x[1], reverse=True)
+    top_jobs = scored_jobs[:top_n]
 
-    return scored_jobs[:top_n]
+    print_ranked_jobs(top_jobs)
+    return top_jobs
 
 def print_ranked_jobs(ranked_jobs: List[Tuple[Dict, float]]):
     """Nicely print the top N ranked jobs."""

@@ -16,12 +16,7 @@ def main():
         resume_embeddings = embedding.embed_resume(RESUME_FILE)
         
         # Top N Selection
-        job_vecs = load_job_embeddings()
-        resume_vec = load_resume_embedding()
-        ranked = rank_top_jobs(resume_vec, job_vecs, top_n=10)
-
-        # print ranked jobs
-        print_ranked_jobs(ranked)
+        ranked = ranking.rank_top_jobs(resume_embeddings, job_embeddings, top_n=10)
 
     except Exception as e:
         print(f"Error: {e}")

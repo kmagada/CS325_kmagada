@@ -54,6 +54,8 @@ def main():
         # connecting and reading then cleaning data
         raw_data = conn.getresponse().read()
         decoded = json.loads(raw_data.decode("utf-8"))
+        # debug
+        # print(decoded)
         cleaned = clean_job_data(decoded)
 
         # file path for JSON
