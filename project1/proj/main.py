@@ -12,8 +12,8 @@ def main():
         datapull.main()
 
         #embeds the resume and job listings
-        job_embeddings = embedding.main(JOB_FILE)
-        resume_embeddings = embedding.main(RESUME_FILE)
+        job_embeddings = embedding.embed_joblistings(JOB_FILE)
+        resume_embeddings = embedding.embed_resume(RESUME_FILE)
         
         # add Top N Selection here for top 10 jobs for the resume maybe use the OpenAI embedding to show recommendations
         # here
