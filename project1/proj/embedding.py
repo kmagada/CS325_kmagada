@@ -120,5 +120,5 @@ def embed_resume(file_path: str, model="text-embedding-3-small"):
     with open(out_path, "w", encoding="utf-8") as out_f:
         json.dump({"vector": embedding}, out_f, ensure_ascii=False, indent=2)
 
-    print(f"Resume saved!")
+    print(f"Resume loaded and Embedded!")
     return embedding
