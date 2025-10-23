@@ -101,7 +101,7 @@ def extract_resume_text(resume_json) -> str:
     return "\n".join(filter(None, parts)).strip()
 
 def embed_resume(file_path: str, model="text-embedding-3-small"):
-    """Read resume JSON, embed as a single vector, save output JSON."""
+    # Read resume JSON, embed as a single vector, save output JSON.
     with open(file_path, "r", encoding="utf-8") as f:
         resume_json = json.load(f)
 
@@ -115,10 +115,5 @@ def embed_resume(file_path: str, model="text-embedding-3-small"):
     )
 
     embedding = response.data[0].embedding
-
-    out_path = "./project1/data/resumeEmbedding.json"
-    with open(out_path, "w", encoding="utf-8") as out_f:
-        json.dump({"vector": embedding}, out_f, ensure_ascii=False, indent=2)
-
     print(f"Resume loaded and Embedded!")
     return embedding
