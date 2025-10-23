@@ -44,8 +44,8 @@ def rank_top_jobs(
 def print_ranked_jobs(ranked_jobs: List[Tuple[Dict, float]]):
     print("\n=== Top Job Matches ===")
     for idx, (job, score) in enumerate(ranked_jobs, 1):
-        title = job.get("job_title", "N/A")
-        company = job.get("employer_name", "N/A")
+        title = job.get("job_title", "no title!")
+        company = job.get("employer_name", "no company name!")
         city = job.get("job_city", "")
         state = job.get("job_state", "")
-        print(f"{idx}. {title} at {company} ({city}, {state}) — Similarity: {score:.4f}")
+        print(f"{idx}. {title} at {company}\n ({city}, {state})\t Similarity: {score:.2%}\n")
