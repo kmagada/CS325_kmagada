@@ -9,7 +9,7 @@ def main():
 
     try:
         #pulls data with the rapi API and saves to a JSON file
-        datapull.maisn()
+        datapull.main()
 
         #embeds the resume and job listings
         job_embeddings = embedding.embed_joblistings(JOB_FILE)
