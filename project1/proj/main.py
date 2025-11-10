@@ -8,7 +8,7 @@ def main():
     RESUME_FILE = os.path.join('project1', 'data', 'resume.json')
 
     try:
-        #pulls data with the API and saves to a JSON file
+        #pulls data with the rapi API and saves to a JSON file
         datapull.main()
 
         #embeds the resume and job listings
