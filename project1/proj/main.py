@@ -5,11 +5,11 @@ import ranking          # ranking job listings
 
 def main():
     JOB_FILE = os.path.join('project1', 'data', 'jobData.json')
-    RESUME_FILE = os.path.join('project1', 'data', 'resume.json')
+    RESUME_FILE = os.path.join('project1', 'data', 'resume.json') 
 
     try:
         #pulls data with the rapi API and saves to a JSON file
-        datapull.main()
+        datapull.maisn()
 
         #embeds the resume and job listings
         job_embeddings = embedding.embed_joblistings(JOB_FILE)
