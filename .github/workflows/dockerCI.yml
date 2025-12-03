@@ -18,4 +18,6 @@ jobs:
           docker build -t project1:test .
 
       - name: Run tests
-        run: docker run project1:test
+        run: |
+          docker build -t myapp -f project1/Dockerfile .
+          docker run --rm myapp pytest -v

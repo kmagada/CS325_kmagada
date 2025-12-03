@@ -6,7 +6,7 @@ COPY requirements.txt .
 
 # Install the Python dependencies
 RUN pip install --no-cache-dir -r requirements.txt
-COPY . .
+COPY project1/ .
 
 # Run tests
 CMD ["pytest", "-v"]
