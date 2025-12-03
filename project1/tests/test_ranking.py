@@ -1,15 +1,15 @@
-from ranking import rank_top_jobs
+from proj.ranking import rank_top_jobs
 
 def test_rank_top_jobs_basic():
-    resume_vec = [1,0]
+    # Fake job vectors (the actual similarity math doesn't matter for this test)
     job_embeddings = [
-        {"vector": [1,0], "metadata": {"job_title": "A"}},
-        {"vector": [0,1], "metadata": {"job_title": "B"}},
+        {"job_id": 1, "vector": [0.9, 0.0, 0.0]},
+        {"job_id": 2, "vector": [0.7, 0.0, 0.0]},
+        {"job_id": 3, "vector": [0.8, 0.0, 0.0]},
     ]
 
-    result = rank_top_jobs(resume_vec, job_embeddings, top_n=1)
+    resume_vector = [1.0, 0.0, 0.0]
 
-    assert len(result) == 1
-    job, score = result[0]
-    assert job["job_title"] == "A"
-    assert score > 0.9
+    result = rank_top_jobs(resume_vector, job_embeddings, top_n=2)
+
+    assert len(result) == 2

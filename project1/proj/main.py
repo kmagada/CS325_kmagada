@@ -1,7 +1,7 @@
 import os
-import datapull         # using Rapi Api to pull job data
-import embedding        # embedding job and resume data using OpenAI
-import ranking          # ranking job listings 
+from proj import datapull         # using Rapi Api to pull job data
+from proj import embedding        # embedding job and resume data using OpenAI
+from proj import ranking          # ranking job listings 
 
 def main():
     JOB_FILE = os.path.join('project1', 'data', 'jobData.json')
