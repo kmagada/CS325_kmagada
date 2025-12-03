@@ -9,11 +9,13 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Check out repo
+      - name: Checkout repo
         uses: actions/checkout@v3
 
-      - name: Build docker image
-        run: docker build -t myproj:test .
+      - name: Build Docker image for tests
+        run: |
+          cd project1
+          docker build -t project1:test .
 
       - name: Run tests
-        run: docker run myproj:test
+        run: docker run project1:test
