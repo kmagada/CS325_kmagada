@@ -1,12 +1,13 @@
-FROM ubuntu:22.04
-RUN apt-get update
-RUN apt-get install -y apache2
+FROM python:3.10-slim
 
-RUN echo "What the hell" > /var/www/html/index.html
+WORKDIR /app
 
-EXPOSE 80
 
-CMD ["apachectl", "-D", "FOREGROUND"]
+# Copy the requirements file inside of the req folder first to leverage Docker's layer caching
+# This step only re-runs if requirements.txt changes.
+COPY requirements.txt .
 
-# docker build -t cs325:copy .
-# docker run -d -p 8080:80 cs325:copy
+# Install the Python dependencies
+RUN pip install --no-cache-dir -r requirements.txt
+
+COPY . .
