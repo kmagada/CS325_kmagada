@@ -1,7 +1,7 @@
 from unittest.mock import patch, MagicMock
 from proj import embedding
 
-@patch("proj.embedding.client.embeddings.create")
+@patch("proj.embedding.OpenAI.embeddings.create")
 def test_embed_resume(mock_embed):
     mock_embed.return_value.data = [MagicMock(embedding=[0.1, 0.2, 0.3])]
 
@@ -24,7 +24,7 @@ def test_embed_resume(mock_embed):
     mock_embed.assert_called_once()
 
     
-@patch("proj.embedding.client.embeddings.create")
+@patch("proj.embedding.OpenAI.embeddings.create")
 def test_embed_joblistings(mock_embed):
     mock_embed.return_value.data = [MagicMock(embedding=[9,9,9])]
 
