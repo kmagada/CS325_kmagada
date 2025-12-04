@@ -19,7 +19,8 @@ jobs:
 
       - name: Build main docker image
         run: |
-          docker build -t myapp . -f project1/Dockerfile --build-context project1=project1/
+          cd project1
+          docker build -t myapp .
 
       - name: Run tests
         run: |
