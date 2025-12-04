@@ -5,6 +5,8 @@ from openai import OpenAI
 from typing import List
 
 load_dotenv()
+client = None
+
 def get_client():
     # Provide a dummy fallback key so Docker tests don't explode
     return OpenAI(api_key=os.getenv("OPENAI_API_KEY", "DUMMY_KEY"))
