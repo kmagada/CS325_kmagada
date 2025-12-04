@@ -1,43 +1,50 @@
 from unittest.mock import patch, MagicMock
 from proj import embedding
+import json
+import tempfile
 
-@patch("proj.embedding.OpenAI.embeddings.create")
-def test_embed_resume(mock_embed):
-    mock_embed.return_value.data = [MagicMock(embedding=[0.1, 0.2, 0.3])]
+def test_embed_resume():
+    # Create a fake OpenAI client with a mock embeddings.create
+    mock_client = MagicMock()
+    mock_client.embeddings.create.return_value.data = [MagicMock(embedding=[0.1, 0.2, 0.3])]
 
-    fake_json = {
-        "basics": {"name": "Kevin", "summary": "Dev"},
-        "work": [],
-        "education": [],
-        "skills": [],
-        "interests": []
-    }
+    # Patch the OpenAI client inside your module to use the mock
+    with patch("proj.embedding.OpenAI", return_value=mock_client):
+        fake_json = {
+            "basics": {"name": "Kevin", "summary": "Dev"},
+            "work": [],
+            "education": [],
+            "skills": [],
+            "interests": []
+        }
 
-    import json, tempfile
-    temp = tempfile.NamedTemporaryFile(delete=False)
-    with open(temp.name, "w") as f:
-        json.dump(fake_json, f)
+        with tempfile.NamedTemporaryFile("w", delete=False) as temp:
+            json.dump(fake_json, temp)
+            temp_path = temp.name
 
-    result = embedding.embed_resume(temp.name)
-    assert result == [0.1, 0.2, 0.3]
+        result = embedding.embed_resume(temp_path)
+        assert result == [0.1, 0.2, 0.3]
 
-    mock_embed.assert_called_once()
+        mock_client.embeddings.create.assert_called_once()
 
-    
-@patch("proj.embedding.OpenAI.embeddings.create")
-def test_embed_joblistings(mock_embed):
-    mock_embed.return_value.data = [MagicMock(embedding=[9,9,9])]
 
-    fake = {"data": [
-        {"job_id": "X", "job_title": "Dev", "job_description": "Code"}
-    ]}
+def test_embed_joblistings():
+    # Create a fake OpenAI client with a mock embeddings.create
+    mock_client = MagicMock()
+    mock_client.embeddings.create.return_value.data = [MagicMock(embedding=[9, 9, 9])]
 
-    import json, tempfile
-    temp = tempfile.NamedTemporaryFile(delete=False)
-    with open(temp.name, "w") as f:
-        json.dump(fake, f)
+    # Patch the OpenAI client inside your module to use the mock
+    with patch("proj.embedding.OpenAI", return_value=mock_client):
+        fake = {"data": [
+            {"job_id": "X", "job_title": "Dev", "job_description": "Code"}
+        ]}
 
-    result = embedding.embed_joblistings(temp.name)
+        with tempfile.NamedTemporaryFile("w", delete=False) as temp:
+            json.dump(fake, temp)
+            temp_path = temp.name
 
-    assert result[0]["job_id"] == "X"
-    assert result[0]["vector"] == [9,9,9]
+        result = embedding.embed_joblistings(temp_path)
+        assert result[0]["job_id"] == "X"
+        assert result[0]["vector"] == [9, 9, 9]
+
+        mock_client.embeddings.create.assert_called_once()
