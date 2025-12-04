@@ -5,7 +5,11 @@ from openai import OpenAI
 from typing import List
 
 load_dotenv()
-client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
+client = None
+
+def get_client():
+    # Provide a dummy fallback key so Docker tests don't explode
+    return OpenAI(api_key=os.getenv("OPENAI_API_KEY", "DUMMY_KEY"))
 
 # ----------------- JOB LISTINGS -----------------
 
@@ -36,6 +40,7 @@ def extract_job_texts(job_json) -> List[str]:
     return text_list
 
 def embed_joblistings(job_file: str):
+    client = get_client()
     with open(job_file, "r", encoding="utf-8") as f:
         data = json.load(f)
 
@@ -101,6 +106,7 @@ def extract_resume_text(resume_json) -> str:
     return "\n".join(filter(None, parts)).strip()
 
 def embed_resume(file_path: str, model="text-embedding-3-small"):
+    client = get_client()
     # Read resume JSON, embed as a single vector, save output JSON.
     with open(file_path, "r", encoding="utf-8") as f:
         resume_json = json.load(f)

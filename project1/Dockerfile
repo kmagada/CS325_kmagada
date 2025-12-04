@@ -1,12 +1,11 @@
-FROM ubuntu:22.04
-RUN apt-get update
-RUN apt-get install -y apache2
+FROM python:3.10-slim
 
-RUN echo "What the hell" > /var/www/html/index.html
+WORKDIR /app
 
-EXPOSE 80
+# Install the Python dependencies
+COPY ./requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
+COPY . .
 
-CMD ["apachectl", "-D", "FOREGROUND"]
-
-# docker build -t cs325:copy .
-# docker run -d -p 8080:80 cs325:copy
+# Run tests
+CMD ["pytest", "-v"]
